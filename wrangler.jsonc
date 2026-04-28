@@ -2,15 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "jav-pack-api",
   "main": "src/index.ts",
-  "compatibility_date": "2026-04-24",
-
+  "compatibility_date": "2026-05-01",
   "kv_namespaces": [
     {
       "binding": "KV",
       "id": "d53c998b99f64dd68b8dc2384f316b93",
     },
   ],
-
   "d1_databases": [
     {
       "binding": "DB",
