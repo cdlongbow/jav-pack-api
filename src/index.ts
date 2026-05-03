@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 
-import AVWikiDB from "./services/AVWikiDB";
-import JAVDatabase from "./services/JAVDatabase";
-import codeValidator from "./validators/code";
+import { getTrailer as getAVWikiDBTrailer } from "./services/av-wiki-db";
+import { getTrailer as getJAVDatabaseTrailer } from "./services/jav-database";
+import { codeValidator } from "./validators/code";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -11,7 +11,7 @@ app.get("/", (c) => c.text("Hello, World!"));
 app.get("/trailers/:code", codeValidator("param", "code"), (c) => {
   const { code } = c.req.valid("param");
 
-  return Promise.any([AVWikiDB.getTrailer(code), JAVDatabase.getTrailer(code)])
+  return Promise.any([getAVWikiDBTrailer(code), getJAVDatabaseTrailer(code)])
     .then((res) => c.json(res))
     .catch(() => c.notFound());
 });

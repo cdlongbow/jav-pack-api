@@ -1,6 +1,6 @@
 import { fetchWithUA } from "../lib/fetch";
 
-const getTrailer = async (code: string) => {
+export const getTrailer = async (code: string) => {
   const res = await fetchWithUA(`https://www.javdatabase.com/movies/${encodeURIComponent(code)}/`);
   if (!res.ok) throw new Error();
 
@@ -19,8 +19,7 @@ const getTrailer = async (code: string) => {
     })
     .on("source", {
       element: (el) => {
-        if (!isInTag || trailer) return;
-        trailer = el.getAttribute("src") || "";
+        if (isInTag && !trailer) trailer = el.getAttribute("src") || "";
       },
     })
     .transform(res)
@@ -30,5 +29,3 @@ const getTrailer = async (code: string) => {
 
   return { trailer };
 };
-
-export default { getTrailer };

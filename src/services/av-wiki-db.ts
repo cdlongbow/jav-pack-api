@@ -1,6 +1,6 @@
 import { fetchWithUA } from "../lib/fetch";
 
-const getTrailer = async (code: string) => {
+export const getTrailer = async (code: string) => {
   const res = await fetchWithUA(`https://avwikidb.com/work/${encodeURIComponent(code)}/`);
   if (!res.ok) throw new Error();
 
@@ -22,5 +22,3 @@ const getTrailer = async (code: string) => {
 
   return { trailer };
 };
-
-export default { getTrailer };
