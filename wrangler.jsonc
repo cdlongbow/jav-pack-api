@@ -3,17 +3,32 @@
   "name": "jav-pack-api",
   "main": "src/index.ts",
   "compatibility_date": "2026-05-01",
-  "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "d53c998b99f64dd68b8dc2384f316b93",
+  "workers_dev": false,
+  "route": {
+    "pattern": "javp.cc.cd",
+    "custom_domain": true,
+  },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
     },
-  ],
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.05,
+    },
+  },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "jav-pack-api-db",
       "database_id": "2b6aa7ce-3305-4a35-a2e5-89b2b26a26bb",
+    },
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "d53c998b99f64dd68b8dc2384f316b93",
     },
   ],
 }
