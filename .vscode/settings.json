@@ -1,0 +1,11 @@
+{
+  "prettier.enable": false,
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.format.oxc": "explicit",
+    "source.fixAll.oxc": "explicit",
+    "source.organizeImports": "never"
+  }
+}
