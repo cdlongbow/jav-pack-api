@@ -1,71 +1,13 @@
 import { Hono } from "hono";
-import { cache } from "hono/cache";
 
-import { getAVWikiDBTrailer, getJAVDatabaseTrailer } from "./services/trailer";
-import { codeValidator } from "./validators/code";
+import trailers from "./routes/trailers";
 
-const TTL_HIT = 86400;
-const TTL_MISS = 300;
-
-const app = new Hono<{ Bindings: CloudflareBindings }>();
+const app = new Hono();
 
 app.get("/", (c) => c.text("Hello, World!"));
-
-app.use("/trailers/*", cache({ cacheName: "trailers" }));
-
-app.get("/trailers/:code", codeValidator("param", "code"), async (c) => {
-  const { code } = c.req.valid("param");
-
-  const cacheKey = `trailer:${code}`;
-  let trailer = await c.env.KV.get(cacheKey, { cacheTtl: TTL_MISS });
-
-  if (trailer === "") {
-    c.header("Cache-Control", `public, max-age=${TTL_MISS}`);
-    return c.json({ error: "Not Found" }, 404);
-  }
-
-  if (trailer) {
-    c.header("Cache-Control", `public, max-age=${TTL_HIT}`);
-    return c.json({ trailer });
-  }
-
-  trailer = await c.env.DB.prepare("SELECT trailer FROM trailers WHERE code = ?").bind(code).first("trailer");
-
-  if (trailer) {
-    c.executionCtx.waitUntil(c.env.KV.put(cacheKey, trailer, { expirationTtl: TTL_HIT }));
-    c.header("Cache-Control", `public, max-age=${TTL_HIT}`);
-    return c.json({ trailer });
-  }
-
-  const controller = new AbortController();
-  const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(5_000)]);
-
-  try {
-    const result = await Promise.any([getAVWikiDBTrailer(code, signal), getJAVDatabaseTrailer(code, signal)]).finally(() => controller.abort());
-
-    const { protocol, href } = new URL(result);
-    if (!protocol.startsWith("http")) throw new Error();
-
-    trailer = href;
-  } catch {
-    c.executionCtx.waitUntil(c.env.KV.put(cacheKey, "", { expirationTtl: TTL_MISS }));
-    c.header("Cache-Control", `public, max-age=${TTL_MISS}`);
-    return c.json({ error: "Not Found" }, 404);
-  }
-
-  c.executionCtx.waitUntil(
-    Promise.allSettled([
-      c.env.DB.prepare("INSERT OR IGNORE INTO trailers (code, trailer) VALUES (?, ?)").bind(code, trailer).run(),
-      c.env.KV.put(cacheKey, trailer, { expirationTtl: TTL_HIT }),
-    ]),
-  );
-
-  c.header("Cache-Control", `public, max-age=${TTL_HIT}`);
-  return c.json({ trailer });
-});
+app.route("/trailers", trailers);
 
 app.notFound((c) => c.json({ error: "Not Found" }, 404));
-
 app.onError((_, c) => c.json({ error: "Internal Server Error" }, 500));
 
 export default app;
