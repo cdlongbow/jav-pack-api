@@ -44,7 +44,7 @@ export const getDMMTrailer = async (code: string, signal?: AbortSignal) => {
   if (!cid || !service || !floor) throw new Error();
 
   const dmmRes = await fetchWithUA(
-    `https://www.dmm.co.jp/service/digitalapi/-/html5_player/=/cid=${cid}/mtype=AhRVShI_/service=${service}/floor=${floor}/mode=/`,
+    `https://www.dmm.co.jp/service/digitalapi/-/html5_player/=/cid=${encodeURIComponent(cid)}/mtype=AhRVShI_/service=${encodeURIComponent(service)}/floor=${encodeURIComponent(floor)}/mode=/`,
     { signal, headers: { Cookie: "age_check_done=1" } },
   );
   if (!dmmRes.ok) throw new Error();

@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cache } from "hono/cache";
 
+import { respondBody, respondStatus } from "../lib/respond";
 import { getAVWikiDBTrailer, getDMMTrailer, getJAVDatabaseTrailer } from "../services/trailer";
 import { codeValidator } from "../validators/code";
 
@@ -14,24 +15,16 @@ trailers.get("/:code", codeValidator("param", "code"), async (c) => {
   const { TTL_HIT, TTL_MISS } = c.env;
 
   const key = `${route}:${code}`;
-  let trailer = await c.env.KV.get(key, { cacheTtl: TTL_HIT });
+  let trailer = await c.env.KV.get(key, { cacheTtl: TTL_MISS });
 
-  if (trailer === "") {
-    c.header("Cache-Control", `public, max-age=${TTL_MISS}`);
-    return c.json({ error: "Not Found" }, 404);
-  }
-
-  if (trailer) {
-    c.header("Cache-Control", `public, max-age=${TTL_HIT}`);
-    return c.json({ trailer });
-  }
+  if (trailer === "") return respondStatus(c, 404, TTL_MISS);
+  if (trailer) return respondBody(c, { trailer }, TTL_HIT);
 
   trailer = await c.env.DB.prepare("SELECT trailer FROM trailers WHERE code = ?").bind(code).first("trailer");
 
   if (trailer) {
     c.executionCtx.waitUntil(c.env.KV.put(key, trailer, { expirationTtl: TTL_HIT }));
-    c.header("Cache-Control", `public, max-age=${TTL_HIT}`);
-    return c.json({ trailer });
+    return respondBody(c, { trailer }, TTL_HIT);
   }
 
   const controller = new AbortController();
@@ -45,13 +38,12 @@ trailers.get("/:code", codeValidator("param", "code"), async (c) => {
     ]).finally(() => controller.abort());
 
     const { protocol, href } = new URL(res);
-    if (!protocol.startsWith("http")) throw new Error();
+    if (protocol !== "http:" && protocol !== "https:") throw new Error();
 
     trailer = href;
   } catch {
     c.executionCtx.waitUntil(c.env.KV.put(key, "", { expirationTtl: TTL_MISS }));
-    c.header("Cache-Control", `public, max-age=${TTL_MISS}`);
-    return c.json({ error: "Not Found" }, 404);
+    return respondStatus(c, 404, TTL_MISS);
   }
 
   c.executionCtx.waitUntil(
@@ -61,8 +53,7 @@ trailers.get("/:code", codeValidator("param", "code"), async (c) => {
     ]),
   );
 
-  c.header("Cache-Control", `public, max-age=${TTL_HIT}`);
-  return c.json({ trailer });
+  return respondBody(c, { trailer }, TTL_HIT);
 });
 
 export default trailers;
