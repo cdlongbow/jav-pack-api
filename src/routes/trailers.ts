@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { cache } from "hono/cache";
 
-import { respondBody, respondStatus } from "../lib/respond";
-import { getAVWikiDBTrailer, getDMMTrailer, getJAVDatabaseTrailer } from "../services/trailer";
-import { codeValidator } from "../validators/code";
+import { respondBody, respondStatus } from "@/lib/respond";
+import { getAVWikiDBTrailer, getDMMTrailer, getJAVDatabaseTrailer } from "@/services/trailer";
+import { codeValidator } from "@/validators/code";
 
 const route = "trailers";
 const trailers = new Hono<{ Bindings: CloudflareBindings }>().basePath(`/${route}`);

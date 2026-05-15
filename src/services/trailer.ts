@@ -1,4 +1,4 @@
-import { fetchWithUA } from "../lib/fetch";
+import { fetchWithUA } from "@/lib/fetch";
 
 export const getAVWikiDBTrailer = async (code: string, signal?: AbortSignal) => {
   const res = await fetchWithUA(`https://avwikidb.com/work/${encodeURIComponent(code)}/`, { signal });

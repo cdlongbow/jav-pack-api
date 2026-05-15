@@ -3,8 +3,8 @@ import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 import { timeout } from "hono/timeout";
 
-import { respondStatus } from "./lib/respond";
-import trailers from "./routes/trailers";
+import { respondStatus } from "@/lib/respond";
+import trailers from "@/routes/trailers";
 
 const app = new Hono();
 

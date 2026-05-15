@@ -7,5 +7,6 @@
     "source.format.oxc": "explicit",
     "source.fixAll.oxc": "explicit",
     "source.organizeImports": "never"
-  }
+  },
+  "js/ts.preferences.importModuleSpecifier": "non-relative"
 }

@@ -1,7 +1,7 @@
 import type { ValidationTargets } from "hono";
 import { validator } from "hono/validator";
 
-import { respondStatus } from "../lib/respond";
+import { respondStatus } from "@/lib/respond";
 
 export const codeValidator = (target: keyof ValidationTargets, field: string) => {
   return validator(target, (value, c) => {
