@@ -56,7 +56,7 @@ export const getDMMTrailer = async (code: string, signal?: AbortSignal) => {
   if (!dmmMatch) throw new Error();
 
   const trailer = JSON.parse(dmmMatch);
-  if (!trailer) throw new Error();
+  if (!trailer?.includes("//")) throw new Error();
 
   return trailer.startsWith("//") ? `https:${trailer}` : trailer;
 };
