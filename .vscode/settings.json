@@ -7,5 +7,6 @@
     "source.fixAll.oxc": "explicit",
     "source.organizeImports": "never"
   },
-  "js/ts.preferences.importModuleSpecifier": "non-relative"
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "json.validate.enable": false
 }
