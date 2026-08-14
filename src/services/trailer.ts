@@ -32,7 +32,7 @@ export const getDMMTrailer = async (code: string, signal?: AbortSignal) => {
       site: "FANZA",
       sort: "match",
       keyword: code,
-    })}`,
+    }).toString()}`,
     { signal },
   );
   if (!apiRes.ok) throw new Error();

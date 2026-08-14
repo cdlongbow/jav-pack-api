@@ -26,6 +26,10 @@
       "head_sampling_rate": 0.01
     }
   },
+  "vars": {
+    "TTL_HIT": 86400,
+    "TTL_MISS": 300
+  },
   "kv_namespaces": [
     {
       "binding": "KV",
