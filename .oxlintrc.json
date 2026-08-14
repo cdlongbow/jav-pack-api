@@ -1,11 +1,19 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "unicorn", "oxc"],
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "import", "promise"],
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error"
   },
-  "rules": {},
-  "env": {
-    "builtin": true
+  "rules": {
+    "import/no-cycle": "error"
+  },
+  "ignorePatterns": ["worker-configuration.d.ts"],
+  "options": {
+    "reportUnusedDisableDirectives": "error",
+    "respectEslintDisableDirectives": false,
+    "typeAware": true,
+    "typeCheck": true
   }
 }

@@ -1,10 +1,15 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["**/*.d.ts"],
+  "ignorePatterns": ["worker-configuration.d.ts"],
   "printWidth": 120,
   "quoteProps": "consistent",
   "sortImports": true,
-  "sortPackageJson": {
-    "sortScripts": true
-  }
+  "overrides": [
+    {
+      "files": ["**/*.jsonc"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
 }

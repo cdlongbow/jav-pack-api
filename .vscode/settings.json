@@ -3,10 +3,10 @@
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": "never",
-    "source.format.oxc": "explicit",
     "source.fixAll.oxc": "explicit",
-    "source.organizeImports": "never"
+    "source.organizeImports": "never",
+    "source.format.oxc": "explicit"
   },
   "js/ts.preferences.importModuleSpecifier": "non-relative",
-  "json.validate.enable": false
+  "js/ts.preferences.preferTypeOnlyAutoImports": true
 }

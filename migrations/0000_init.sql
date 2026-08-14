@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS trailers (
-  code    TEXT PRIMARY KEY,
+CREATE TABLE trailers (
+  code TEXT PRIMARY KEY,
   trailer TEXT NOT NULL
-);
+) STRICT, WITHOUT ROWID;

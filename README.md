@@ -2,25 +2,23 @@
 
 > 一点微小的工作
 
-```txt
-pnpx taze -w
+```sh
 pnpm i
 pnpm dev
 ```
 
-```txt
+```sh
 pnpm run deploy
 ```
 
 [For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
 
-```txt
-pnpm cf-typegen
+```sh
+pnpm types
 ```
 
 Pass the `CloudflareBindings` as generics when instantiation `Hono`:
 
 ```ts
-// src/index.ts
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 ```
