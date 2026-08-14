@@ -14,7 +14,7 @@
     "predeploy": "pnpm check"
   },
   "dependencies": {
-    "hono": "^4.13.1"
+    "hono": "^4.13.2"
   },
   "devDependencies": {
     "oxfmt": "^0.63.0",
