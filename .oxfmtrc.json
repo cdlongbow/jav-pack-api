@@ -3,13 +3,5 @@
   "ignorePatterns": ["worker-configuration.d.ts"],
   "printWidth": 120,
   "quoteProps": "consistent",
-  "sortImports": true,
-  "overrides": [
-    {
-      "files": ["**/*.jsonc"],
-      "options": {
-        "trailingComma": "none"
-      }
-    }
-  ]
+  "sortImports": true
 }
